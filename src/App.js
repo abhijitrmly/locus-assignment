@@ -1,25 +1,37 @@
-import logo from './logo.svg';
+/* eslint-disable react/jsx-filename-extension */
+import React, { useState } from 'react';
 import './App.css';
+import KeyboardShortcut from './utils/addons/keyboardShortcuts';
+import ShortcutsContext from './store/ShortcutsContext';
+import KeyboardShortcutList from './utils/addons/ShortcutList';
 
-function App() {
+// A sample keyboard shortcut is displayed here
+const App = () => {
+  const [contextState, setContextState] = useState({});
+
+  const initialValues = {
+    shortcuts: contextState,
+    changeShortcut: (value) => {
+      if (JSON.stringify(contextState) !== JSON.stringify(value)) {
+        setContextState(value);
+      }
+    },
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ShortcutsContext.Provider value={initialValues}>
+      <KeyboardShortcut
+        shortcutKeys="shift s"
+        callback={() => {
+          console.log('this is working');
+        }}
+      />
+      <hr />
+      <div>
+        <KeyboardShortcutList />
+      </div>
+    </ShortcutsContext.Provider>
   );
-}
+};
 
 export default App;
